@@ -81,9 +81,11 @@ for table in tables:
         if vars[0].getAttribute('lookup') == "row":
             row = vars[0].firstChild.data
             column = vars[1].firstChild.data
-        else:
+        elif vars[0].getAttribute('lookup') == "column":
             row = vars[1].firstChild.data
             column = vars[0].firstChild.data
+        else:
+            continue
         rawData = table.getElementsByTagName("tableData")[0].firstChild.data
 
         lines = rawData.split('\n')
@@ -154,28 +156,36 @@ for table in tables:
                 row = vars[0].firstChild.data
                 column = vars[1].firstChild.data
                 breakpoint = vars[2].firstChild.data
-            else:
+            elif vars[1].getAttribute('lookup') == "table":
                 row = vars[0].firstChild.data
                 column = vars[2].firstChild.data
                 breakpoint = vars[1].firstChild.data
-        if vars[0].getAttribute('lookup') == "column":
+            else:
+                continue
+        elif vars[0].getAttribute('lookup') == "column":
             if vars[1].getAttribute('lookup') == "row":
                 row = vars[1].firstChild.data
                 column = vars[0].firstChild.data
                 breakpoint = vars[2].firstChild.data
-            else:
+            elif vars[1].getAttribute('lookup') == "table":
                 row = vars[2].firstChild.data
                 column = vars[0].firstChild.data
                 breakpoint = vars[1].firstChild.data
-        else:
+            else:
+                continue
+        elif vars[0].getAttribute('lookup') == "table":
             if vars[1].getAttribute('lookup') == "row":
                 row = vars[1].firstChild.data
                 column = vars[2].firstChild.data
                 breakpoint = vars[0].firstChild.data
-            else:
+            elif vars[1].getAttribute('lookup') == "column":
                 row = vars[2].firstChild.data
                 column = vars[1].firstChild.data
                 breakpoint = vars[0].firstChild.data
+            else:
+                continue
+        else:
+            continue
 
         for breakTable in table.getElementsByTagName("tableData"):
             rawData = breakTable.firstChild.data
