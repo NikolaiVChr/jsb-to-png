@@ -55,6 +55,8 @@ def runner(line):
         return []
     return list(map(float, numbs))
 
+print("Generating PNG images..")
+
 for table in tables:
     name = table.getAttribute("name")
     if not name:
