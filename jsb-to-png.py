@@ -10,13 +10,13 @@ import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
 import os
-
-
-
+import sys
 
 
 
 filename="jsb-test.xml"
+image_width = 1280
+image_height = 720
 
 #
 # A folder will be created in working folder named same as filename
@@ -27,7 +27,13 @@ filename="jsb-test.xml"
 #
 # For 2D and 3D tables it will graph both a lines and a carpet plot
 #
+# Commandline: python jsb-to-png.py [filename]
+#
+# If no filename is specified in as commandline arg then "jsb-test.xml" is assumed.
 
+
+if len(sys.argv) > 1:
+    filename = str(sys.argv[1])
 
 
 
@@ -37,6 +43,7 @@ file=os.path.splitext(filename)[0]
 if not os.path.exists(os.getcwd()+"/"+file):
     os.mkdir(os.getcwd()+"/"+file)
 
+print ("parsing "+filename)
 doc=xml.dom.minidom.parse (filename)
 
 tables=doc.getElementsByTagName("table")
@@ -74,7 +81,7 @@ for table in tables:
         data = {var: dx, name: dy}
 
         fig = px.line(data, x=var, y=name)#, color=''
-        fig.write_image(file+"/"+name+".png", format='png', width=1280, height=720, scale=1)
+        fig.write_image(file+"/"+name+".png", format='png', width=image_width, height=image_height, scale=1)
     elif len(vars) == 2:
         row = ''
         column = ''
@@ -112,29 +119,13 @@ for table in tables:
             y=dz,
             aaxis=dict(
                 title=column
-                #tickprefix=column + ':',
-                #ticksuffix='m',
-                #smoothing=1,
-                #minorgridcount=9,
-                #minorgridwidth=0.6,
-                #minorgridcolor='white',
-                #gridcolor='white',
-                #color='white'
             ),
             baxis=dict(
                 title=row
-                #tickprefix=row + ':',
-                #ticksuffix='Pa',
-                #smoothing=1,
-                #minorgridcount=9,
-                #minorgridwidth=0.6,
-                #gridcolor='white',
-                #minorgridcolor='white',
-                #color='white'
             )
-        ), layout=dict(title=name))
+        ), layout=dict(yaxis=dict(title=name)))
 
-        fig.write_image(file+"/" + name + ".carpet.png", format='png', width=1280, height=720, scale=1)
+        fig.write_image(file+"/" + name + ".carpet.png", format='png', width=image_width, height=image_height, scale=1)
 
         fig2 = go.Figure()
 
@@ -146,7 +137,7 @@ for table in tables:
             yaxis=dict(title=name),
             xaxis=dict(title=row),
         )
-        fig2.write_image(file+"/" + name + ".png", format='png', width=1280, height=720, scale=1)
+        fig2.write_image(file+"/" + name + ".png", format='png', width=image_width, height=image_height, scale=1)
     elif len(vars) == 3:
         row = ''
         column = ''
@@ -235,9 +226,10 @@ for table in tables:
                     #minorgridcolor='white',
                     #color='white'
                 )
-            ), layout=dict(title=name+"             "+breakpoint+" breakPoint="+str(breakValue)))
+            ), layout=dict(title="             "+breakpoint+" breakPoint="+str(breakValue),
+                           yaxis = dict(title=name),))
 
-            fig.write_image(file+"/" + name +str(breakValue)+ ".carpet.png", format='png', width=1280, height=720, scale=1)
+            fig.write_image(file+"/" + name +str(breakValue)+ ".carpet.png", format='png', width=image_width, height=image_height, scale=1)
 
             fig2 = go.Figure()
 
@@ -245,8 +237,8 @@ for table in tables:
                 data = dz[0:,num]
                 fig2.add_trace(go.Scatter(x=dx, y=data, name=str(dy[num]), mode='lines'))
             fig2.update_layout(
-                title="Breakpoint "+breakpoint+"="+str(breakValue)+",  Color code from "+column,
+                title="Breakpoint "+breakpoint+"="+str(breakValue)+",    Color code from "+column,
                 yaxis=dict(title=name),
                 xaxis=dict(title=row),
             )
-            fig2.write_image(file+"/" + name +str(breakValue)+ ".png", format='png', width=1280, height=720, scale=1)
+            fig2.write_image(file+"/" + name +str(breakValue)+ ".png", format='png', width=image_width, height=image_height, scale=1)
