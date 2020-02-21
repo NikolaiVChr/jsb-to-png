@@ -13,7 +13,7 @@ import os
 import sys
 #import re
 
-version = "1.06"
+version = "1.07"
 
 # default filename
 filename="jsb-test.xml"
@@ -122,10 +122,12 @@ for table in tables:
             aaxis=dict(
                 title=column,
                 color = 'blue',
-                linecolor='blue'
+                linecolor='blue',
+                gridcolor='lightblue'
             ),
             baxis=dict(
-                title=row
+                title=row,
+                gridcolor='lightgreen'
             )
         ), layout=dict(yaxis=dict(title=name)))
 
@@ -216,18 +218,19 @@ for table in tables:
                 aaxis=dict(
                     title=column,
                     color = 'blue',
-                    linecolor = 'blue'
+                    linecolor = 'blue',
                     #tickprefix=column + ':',
                     #ticksuffix='m',
                     #smoothing=1,
                     #minorgridcount=9,
                     #minorgridwidth=0.6,
                     #minorgridcolor='white',
-                    #gridcolor='white',
+                    gridcolor='lightblue'
                     #color='white'
                 ),
                 baxis=dict(
-                    title=row
+                    title=row,
+                    gridcolor='lightgreen'
                     #tickprefix=row + ':',
                     #ticksuffix='Pa',
                     #smoothing=1,
