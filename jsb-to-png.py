@@ -3,8 +3,8 @@
 #
 # License: GPL 2.0
 #
-
-
+# See more info in the readme and license files
+#
 import xml.dom.minidom
 import plotly.express as px
 import plotly.graph_objects as go
@@ -14,32 +14,17 @@ import sys
 
 version = "1.05"
 
-
-
+# default filename
 filename="jsb-test.xml"
+
+# default PNG output image size
 image_width = 1280
 image_height = 720
-
-#
-# A folder will be created in working folder named same as filename
-# In this folder PNG of the tables will be output
-#
-# Each table in the JSB input file that you want to graph MUST have name="mytable" attribute in the <table> tag
-# For 2D and 3D tables <independentVar> tags MUST all have lookup= attribute
-#
-# For 2D and 3D tables it will graph both a lines and a carpet plot
-#
-# Commandline: python jsb-to-png.py [filename]
-#
-# If no filename is specified in as commandline arg then "jsb-test.xml" is assumed.
 
 print("Starting JSBSim to PNG program, version "+version)
 
 if len(sys.argv) > 1:
     filename = str(sys.argv[1])
-
-
-
 
 file=os.path.splitext(filename)[0]
 
