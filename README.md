@@ -7,7 +7,7 @@ A folder will be created in working folder named same as filename
 
 In this folder PNG of the tables will be output
 
-Each table in the JSB input file that you want to graph *MUST* have name="mytable" attribute in the `<table>` tag
+Each table in the JSB input file that you want to graph *MUST* have name="mytable" attribute in the `<table>` tag. That name will also be used a Y-axis title in the graphs.
 
 For 2D and 3D tables `<independentVar>` tags *MUST* all have lookup= attributes
 
