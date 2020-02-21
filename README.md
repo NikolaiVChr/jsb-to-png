@@ -1,4 +1,4 @@
-# jsb-to-png
+# jsb-to-png v1.05
 Takes a JSBSim xml file as input and converts all the tables to PNG images
 
 Requires python with plotly.express and plotly.graph_objects libraries.

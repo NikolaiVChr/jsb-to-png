@@ -12,6 +12,8 @@ import numpy as np
 import os
 import sys
 
+version = "1.05"
+
 
 
 filename="jsb-test.xml"
@@ -31,6 +33,7 @@ image_height = 720
 #
 # If no filename is specified in as commandline arg then "jsb-test.xml" is assumed.
 
+print("Starting JSBSim to PNG program, version "+version)
 
 if len(sys.argv) > 1:
     filename = str(sys.argv[1])
@@ -59,7 +62,7 @@ def runner(line):
         return []
     return list(map(float, numbs))
 
-print("Generating PNG images..")
+print("Generating the ("+str(image_width)+"x"+str(image_height)+") PNG images..")
 tablecount = 0
 ignorecount = 0
 
