@@ -11,8 +11,9 @@ import plotly.graph_objects as go
 import numpy as np
 import os
 import sys
+#import re
 
-version = "1.05"
+version = "1.06"
 
 # default filename
 filename="jsb-test.xml"
@@ -61,7 +62,9 @@ for table in tables:
 
     if len(vars) == 1:
         var = vars[0].firstChild.data
-        rawData = table.getElementsByTagName("tableData")[0].firstChild.data
+        rawData = table.getElementsByTagName("tableData")[0]
+        rawData = " ".join(t.nodeValue for t in rawData.childNodes if t.nodeType == t.TEXT_NODE)
+        #rawData = re.sub("(<!--.*?-->)", "", rawData, flags=re.DOTALL)
 
         lines = rawData.split('\n')
 
@@ -92,8 +95,8 @@ for table in tables:
         else:
             ignorecount += 1
             continue
-        rawData = table.getElementsByTagName("tableData")[0].firstChild.data
-
+        rawData = table.getElementsByTagName("tableData")[0]
+        rawData = " ".join(t.nodeValue for t in rawData.childNodes if t.nodeType == t.TEXT_NODE)
         lines = rawData.split('\n')
 
         dx = []
@@ -185,7 +188,7 @@ for table in tables:
             continue
 
         for breakTable in table.getElementsByTagName("tableData"):
-            rawData = breakTable.firstChild.data
+            rawData = " ".join(t.nodeValue for t in breakTable.childNodes if t.nodeType == t.TEXT_NODE)
             breakValue = breakTable.getAttribute("breakPoint")
 
             lines = rawData.split('\n')
