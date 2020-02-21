@@ -120,7 +120,9 @@ for table in tables:
             b=dx,
             y=dz,
             aaxis=dict(
-                title=column
+                title=column,
+                color = 'blue',
+                linecolor='blue'
             ),
             baxis=dict(
                 title=row
@@ -207,7 +209,9 @@ for table in tables:
                 b=dx,
                 y=dz,
                 aaxis=dict(
-                    title=column
+                    title=column,
+                    color = 'blue',
+                    linecolor = 'blue'
                     #tickprefix=column + ':',
                     #ticksuffix='m',
                     #smoothing=1,
