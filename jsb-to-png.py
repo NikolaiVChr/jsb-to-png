@@ -40,11 +40,15 @@ if len(sys.argv) > 1:
 
 file=os.path.splitext(filename)[0]
 
-if not os.path.exists(os.getcwd()+"/"+file):
-    os.mkdir(os.getcwd()+"/"+file)
-
-print ("parsing "+filename)
+print ("Parsing "+filename)
 doc=xml.dom.minidom.parse (filename)
+
+
+if not os.path.exists(os.getcwd()+os.sep+file):
+    print("Making folder " + os.getcwd() + os.sep + file)
+    os.mkdir(os.getcwd()+os.sep+file)
+else:
+    print("Output to folder " + os.getcwd() + os.sep + file + " (will overwrite PNG images if exist)")
 
 tables=doc.getElementsByTagName("table")
 
@@ -56,10 +60,13 @@ def runner(line):
     return list(map(float, numbs))
 
 print("Generating PNG images..")
+tablecount = 0
+ignorecount = 0
 
 for table in tables:
     name = table.getAttribute("name")
     if not name:
+        ignorecount += 1
         continue
     name = name.replace('/','-')
     vars = table.getElementsByTagName("independentVar")
@@ -83,7 +90,8 @@ for table in tables:
         data = {var: dx, name: dy}
 
         fig = px.line(data, x=var, y=name)#, color=''
-        fig.write_image(file+"/"+name+".png", format='png', width=image_width, height=image_height, scale=1)
+        tablecount += 1
+        fig.write_image(file+os.sep+name+".png", format='png', width=image_width, height=image_height, scale=1)
     elif len(vars) == 2:
         row = ''
         column = ''
@@ -94,6 +102,7 @@ for table in tables:
             row = vars[1].firstChild.data
             column = vars[0].firstChild.data
         else:
+            ignorecount += 1
             continue
         rawData = table.getElementsByTagName("tableData")[0].firstChild.data
 
@@ -129,7 +138,7 @@ for table in tables:
             )
         ), layout=dict(yaxis=dict(title=name)))
 
-        fig.write_image(file+"/" + name + ".carpet.png", format='png', width=image_width, height=image_height, scale=1)
+        fig.write_image(file+os.sep + name + ".carpet.png", format='png', width=image_width, height=image_height, scale=1)
 
         fig2 = go.Figure()
 
@@ -141,7 +150,8 @@ for table in tables:
             yaxis=dict(title=name),
             xaxis=dict(title=row),
         )
-        fig2.write_image(file+"/" + name + ".png", format='png', width=image_width, height=image_height, scale=1)
+        fig2.write_image(file+os.sep + name + ".png", format='png', width=image_width, height=image_height, scale=1)
+        tablecount += 1
     elif len(vars) == 3:
         row = ''
         column = ''
@@ -156,6 +166,7 @@ for table in tables:
                 column = vars[2].firstChild.data
                 breakpoint = vars[1].firstChild.data
             else:
+                ignorecount += 1
                 continue
         elif vars[0].getAttribute('lookup') == "column":
             if vars[1].getAttribute('lookup') == "row":
@@ -167,6 +178,7 @@ for table in tables:
                 column = vars[0].firstChild.data
                 breakpoint = vars[1].firstChild.data
             else:
+                ignorecount += 1
                 continue
         elif vars[0].getAttribute('lookup') == "table":
             if vars[1].getAttribute('lookup') == "row":
@@ -178,8 +190,10 @@ for table in tables:
                 column = vars[1].firstChild.data
                 breakpoint = vars[0].firstChild.data
             else:
+                ignorecount += 1
                 continue
         else:
+            ignorecount += 1
             continue
 
         for breakTable in table.getElementsByTagName("tableData"):
@@ -235,7 +249,7 @@ for table in tables:
             ), layout=dict(title="             "+breakpoint+" breakPoint="+str(breakValue),
                            yaxis = dict(title=name),))
 
-            fig.write_image(file+"/" + name +str(breakValue)+ ".carpet.png", format='png', width=image_width, height=image_height, scale=1)
+            fig.write_image(file+os.sep + name +str(breakValue)+ ".carpet.png", format='png', width=image_width, height=image_height, scale=1)
 
             fig2 = go.Figure()
 
@@ -247,4 +261,10 @@ for table in tables:
                 yaxis=dict(title=name),
                 xaxis=dict(title=row),
             )
-            fig2.write_image(file+"/" + name +str(breakValue)+ ".png", format='png', width=image_width, height=image_height, scale=1)
+            fig2.write_image(file+ os.sep + name +str(breakValue)+ ".png", format='png', width=image_width, height=image_height, scale=1)
+            tablecount += 1
+
+
+print("Finished. Successfully processed "+str(tablecount)+" tables.")
+if ignorecount > 0:
+    print("Ignored "+str(ignorecount)+" tables (see readme on how to avoid tables being ignored).")

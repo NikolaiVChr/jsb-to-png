@@ -5,7 +5,7 @@ Requires python with plotly.express and plotly.graph_objects libraries.
 
 A folder will be created in working folder named same as filename
 
-In this folder PNG of the tables will be output
+In this folder PNG of the tables will be output, it *will* overwrite if the folder is not empty.
 
 Each table in the JSB input file that you want to graph *MUST* have name="mytable" attribute in the `<table>` tag. That name will also be used a Y-axis title in the graphs.
 
