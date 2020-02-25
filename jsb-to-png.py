@@ -13,7 +13,7 @@ import os
 import sys
 #import re
 
-version = "1.07"
+version = "1.08"
 
 # default filename
 filename="jsb-test.xml"
@@ -139,9 +139,10 @@ for table in tables:
             data = dz[0:,num]
             fig2.add_trace(go.Scatter(x=dx, y=data, name=str(dy[num]), mode='lines'))
         fig2.update_layout(
-            title="Color code from "+column,
+            #title="Color code from "+column,
             yaxis=dict(title=name),
             xaxis=dict(title=row),
+            legend_title=dict(text=column)
         )
         fig2.write_image(file+os.sep + name + ".png", format='png', width=image_width, height=image_height, scale=1)
         tablecount += 1
@@ -251,9 +252,13 @@ for table in tables:
                 data = dz[0:,num]
                 fig2.add_trace(go.Scatter(x=dx, y=data, name=str(dy[num]), mode='lines'))
             fig2.update_layout(
-                title="Breakpoint "+breakpoint+"="+str(breakValue)+",    Color code from "+column,
+                title="Breakpoint "+breakpoint+"="+str(breakValue),#+",    Color code from "+column,
                 yaxis=dict(title=name),
                 xaxis=dict(title=row),
+                legend_title=dict(text=column)#,
+                                                 #    font=dict(family="sans-serif",
+                                                 #              size=18,
+                                                 #              color='blue')
             )
             fig2.write_image(file+ os.sep + name +str(breakValue)+ ".png", format='png', width=image_width, height=image_height, scale=1)
             tablecount += 1

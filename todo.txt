@@ -2,3 +2,4 @@ Make the axis line for A blue also like the ticks.
 Find a way to make multiple line color coding title just above the color coding legends instead of as part of main title.
 Add a flag to reverse rows/columns as X/Y axes.
 Maybe tweak some colors? Especially for carpet plots.
+Add a flag to change image dimensions
