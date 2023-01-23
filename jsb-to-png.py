@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+#
 # Function: JSBSim tables to PNG outputs
 # Author: Nikolai V. Chr.
 #
