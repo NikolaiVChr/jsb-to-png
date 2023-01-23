@@ -53,11 +53,15 @@ def runner(line):
 print("Generating the ("+str(image_width)+"x"+str(image_height)+") PNG images..")
 tablecount = 0
 ignorecount = 0
+ignored = []
+current = 0
 
 for table in tables:
+    current += 1
     name = table.getAttribute("name")
     if not name:
         ignorecount += 1
+        ignored.append(current)
         continue
     name = name.replace('/','-')
     vars = table.getElementsByTagName("independentVar")
@@ -268,4 +272,5 @@ for table in tables:
 
 print("Finished. Successfully processed "+str(tablecount)+" tables.")
 if ignorecount > 0:
-    print("Ignored "+str(ignorecount)+" tables (see readme on how to avoid tables being ignored).")
+    print("Ignored "+str(ignorecount)+" table(s) (see readme on how to avoid tables being ignored).")
+    print("Ignored table(s) number: ", ignored)
