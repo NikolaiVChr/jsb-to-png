@@ -15,7 +15,7 @@ import os
 import sys
 #import re
 
-version = "1.08"
+version = "1.09"
 
 # default filename
 filename="jsb-test.xml"
