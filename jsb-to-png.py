@@ -13,7 +13,7 @@ import plotly.graph_objects as go
 import numpy as np
 import os
 import sys
-#import re
+from pathlib import Path
 
 version = "1.09"
 
@@ -30,16 +30,19 @@ if len(sys.argv) > 1:
     filename = str(sys.argv[1])
 
 file=os.path.splitext(filename)[0]
+path_str = Path(file)
+path_only_name = path_str.stem
+print(path_only_name )
 
 print ("Parsing "+filename)
 doc=xml.dom.minidom.parse (filename)
 
 
-if not os.path.exists(os.getcwd()+os.sep+file):
-    print("Making folder " + os.getcwd() + os.sep + file)
-    os.mkdir(os.getcwd()+os.sep+file)
+if not os.path.exists(os.getcwd()+os.sep+path_only_name):
+    print("Making folder " + os.getcwd() + os.sep + path_only_name)
+    os.mkdir(os.getcwd()+os.sep+path_only_name)
 else:
-    print("Output to folder " + os.getcwd() + os.sep + file + " (will overwrite PNG images if exist)")
+    print("Output to folder " + os.getcwd() + os.sep + path_only_name + " (will overwrite PNG images if exist)")
 
 tables=doc.getElementsByTagName("table")
 
@@ -88,7 +91,7 @@ for table in tables:
 
         fig = px.line(data, x=var, y=name)#, color=''
         tablecount += 1
-        fig.write_image(file+os.sep+name+".png", format='png', width=image_width, height=image_height, scale=1)
+        fig.write_image(path_only_name+os.sep+name+".png", format='png', width=image_width, height=image_height, scale=1)
     elif len(vars) == 2:
         row = ''
         column = ''
@@ -137,7 +140,7 @@ for table in tables:
             )
         ), layout=dict(yaxis=dict(title=name)))
 
-        fig.write_image(file+os.sep + name + ".carpet.png", format='png', width=image_width, height=image_height, scale=1)
+        fig.write_image(path_only_name+os.sep + name + ".carpet.png", format='png', width=image_width, height=image_height, scale=1)
 
         fig2 = go.Figure()
 
@@ -150,7 +153,7 @@ for table in tables:
             xaxis=dict(title=row),
             legend_title=dict(text=column)
         )
-        fig2.write_image(file+os.sep + name + ".png", format='png', width=image_width, height=image_height, scale=1)
+        fig2.write_image(path_only_name+os.sep + name + ".png", format='png', width=image_width, height=image_height, scale=1)
         tablecount += 1
     elif len(vars) == 3:
         row = ''
